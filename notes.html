@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes</title>
+    <style>
+        .container
+        {
+            width: 100%;
+            min-height: 200px;
+        }
+
+        .container > .table
+        {
+            width: 100%;
+            margin:auto;
+            margin-top: 70px;
+        }
+
+        .container > .table > table
+        {
+            width: 100%;
+        }
+        .container > .table > table > tbody > tr
+        {
+            height: 50px;
+        }
+
+        .container > .table > table > tbody > tr:nth-child(odd)
+        {
+            background-color: gray;
+            color: white;
+        }
+
+
+        .container > .table > table > tbody > tr > th:nth-child(1)
+        {
+          width: 20%;
+        }
+
+        .container > .table > table > tbody > tr > th > p
+        {
+            background-color: black;
+            color: white;
+        }
+
+    </style>
+</head>
+<body>
+         <div class="container" id="cont"></div>
+
+         <div class="container" id="notesList"></div>
+</body>
+<script src="./render.js" type="module"></script>
+
+<script>
+    var DivId2 = document.getElementById('notesList');
+    
+    function notes(val)
+    {
+
+     var get = JSON.parse(localStorage.getItem('nodeData'));
+
+     var arr = get.filter((a)=>{
+
+        if(a.day==val)
+        {
+           return a;
+        }
+     });
+     var length = arr.length;
+     
+     DivId2.innerHTML="";
+     var div = document.createElement('div');
+     div.setAttribute('class', 'table');
+
+    var table = document.createElement('table');
+    table.setAttribute('border', "2");
+    var thead = document.createElement('thead');
+    var tr = document.createElement('tr');
+
+    var th = document.createElement('th');
+    var th1 = document.createElement('th');
+
+    th.innerText = "Notes Titles";
+    th1.innerText = "Notes";
+
+    tr.append(th, th1);
+    thead.append(tr);
+    table.append(thead);
+    div.append(table);
+    var tbody = document.createElement('tbody');
+   
+    table.append(tbody);
+    for (let i = 0; i < length;i++)
+    {
+        var tr1 = document.createElement('tr');
+        var data = document.createElement('th');
+        var data1 = document.createElement('th');
+
+        data.innerHTML = `${arr[i].title}`;
+        data1.innerHTML = `<a href=javascript:void(0) onclick=visible(${i+1})>Notes (click)</a><p class=span style=display:none id=visible${i+1}>${arr[i].notes}</p>`;
+        tr1.append(data, data1);
+        tbody.append(tr1);
+    }
+
+    DivId2.append(div);   
+    }
+
+
+    function visible(val)
+    {
+       let id = document.getElementById(`visible${val}`);
+       if(id.style.display=="none")
+       {
+           id.style.display = "block";
+       }
+       else
+       {
+        id.style.display = "none";
+       }
+       
+    }
+</script>
+</html>
